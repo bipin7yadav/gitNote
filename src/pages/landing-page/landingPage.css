@@ -1,0 +1,37 @@
+.text{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 4rem;
+    margin:0 23rem ;
+    margin-top: -2rem;
+}
+.note-img{
+    width: 30%;
+    margin-top: 2rem;
+}
+
+.links{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.Cbtn{
+    outline: none;
+    border-radius: .7rem;
+    font-size: 1rem;
+    padding: .5rem 1rem;
+    cursor: pointer;
+}
+.link{
+    display: inline-block;
+    color: black;
+}
+
+.entry{
+    margin: 1rem 0;
+}
+.margin{
+    margin-left: -1.7rem;
+}
