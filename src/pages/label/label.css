@@ -1,0 +1,18 @@
+
+
+.sideBar{
+    width: 15vw;
+}
+
+.labels{
+    width:100vw;
+    margin-left: 8rem;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+.flexMe{
+    display: flex !important;
+    flex-direction: row;
+    text-align: start;
+}

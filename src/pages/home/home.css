@@ -1,0 +1,136 @@
+.home{
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+}
+.flexMe{
+    display: flex;
+}
+.main-structure{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.imgFlex{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid blue;
+    /* height: max-content; */
+    padding: .4rem;
+    margin-bottom: 12rem;
+    background-color: aqua;
+
+}
+
+.buttons{
+    display: flex;
+    justify-content: space-between;
+    margin: .25rem;
+    height: 3rem;
+}
+.AddMe{
+    background-color: cadetblue ;
+}
+
+.Add{
+    width: 98%;
+    height: 2rem;
+    font-size: larger;
+}
+.AddText{
+    width: 98%;
+    height: 6rem;
+    resize: none;
+    font-size: 1.2rem;
+
+}
+.foot{
+    display: flex;
+    justify-content: space-between;
+    margin: .22rem;
+}
+.sideBar{
+    width: 14%;
+    text-align: start;
+    left: 0;
+    top: 0;
+    margin-top: 6rem;
+    position:fixed;
+}
+
+.style{
+    width: 100%;
+}
+.style1{
+    width: 2rem;
+}
+.btn{
+    height: 3rem;
+}
+
+.btn2{
+    width: 10%;
+}
+.btn3{
+    width: 40%;
+    font-size: 1.3rem;
+    padding: .7rem;
+}
+.Addbtn{
+    padding: .7rem;
+    outline: none;
+    border-color: white;
+}
+
+.footbtn{
+    display: flex;
+    justify-content: flex-start;
+}
+.imgbtn{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.sort2{
+    text-align: start;
+    width: 25vw;
+}
+.mappingArea{
+    /* background-color: skyblue; */
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: -3rem;
+}
+.mapNotes{
+    background-color: #fff;
+    width: 25vw;
+    height: max-content;
+    border: 2px solid black;
+    margin: .5rem;
+    text-align: start;
+}
+
+.title{
+    display: flex;
+    justify-content: space-between;
+}
+
+.material-icons{
+    cursor: pointer;
+}
+
+.hover:hover{
+    background-color: aqua;
+    width: 7.4rem;
+    margin: .3rem;
+    border-radius: 4px;
+}
+
+
