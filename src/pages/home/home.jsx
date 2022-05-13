@@ -1,25 +1,114 @@
 import "./home.css";
 import { Link } from "react-router-dom";
+import {v4 as uuid} from "uuid";
 import { useState } from "react";
 import { SortBy } from "../../components/sortby";
-import { useNotesContext } from "../../context/context"
+import { NotesContextProvider, useNotesContext } from "../../context/context";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
+
+const formats = ["bold", "italic", "underline", "strike", "image", "list", "link", "clean", "video"];
+const modules = {
+    toolbar: [
+        ["bold", "italic", "underline", "strike"],
+        [],
+        [{ list: "ordered" }, { list: "bullet" }],
+        [],
+        ["image", "video", "link"],
+        ["clean"],
+    ],
+};
 
 function Home() {
-    let { styles, dispatchStyles, note: { savedNotes }, dispatchNote } = useNotesContext();
+    let { styles, dispatchStyles, note: { savedNotes,labelArray }, dispatchNote } = useNotesContext();
 
     const [content, setContent] = useState("")
-    const [title, setTitle] = useState("")
-    const obj = { Title: title, Content: content ,trash:false,archive:false,hw:false,project:false,show:false,meeting:false}
-
-    const { byBold, byItalic, byUnderLine, byStrike,bySearch } = styles;
+    const [title, setTitle] = useState("") 
+    const [color,setColor] =useState("")
+    const [label,setLabel]=useState("")
+    const [prioity,setPriority]=useState("Low")
+    const [count,setCount]=useState(0)
+    const [toggle,setToggle]=useState(false)
     
-    function displayNotes(){
+    const obj = { Title: title, Content: content ,Color:color,Label:label,id:uuid(),Prioity:prioity,Date:(new Date()).toString(),Sort:count}
+
+    const {bySearch,byPriority,priority,pallete,bySort } = styles;
+
+
+    function displayNotes() {
         let sortedNotes =savedNotes;
 
-        if (bySearch){
-            sortedNotes=sortedNotes.filter((a)=>a.Title.toLowerCase().includes(bySearch))
+        if (bySearch) {
+            sortedNotes = sortedNotes.filter((a) => a.Title.toLowerCase().includes(bySearch))
+        }
+
+        if (byPriority==="Low"){
+            sortedNotes = savedNotes.filter((a)=>a.Prioity==="Low")
+        }
+
+        if (byPriority==="Medium"){
+            sortedNotes = savedNotes.filter((a)=>a.Prioity==="Medium")
+        }
+
+        if (byPriority==="High"){
+            sortedNotes = savedNotes.filter((a)=>a.Prioity==="High")
+        }
+        if (bySort==="Latest"){
+            sortedNotes =sortedNotes.sort((a,b)=>
+                a.Sort-b.Sort 
+                
+            )
+        }
+        if (bySort==="Oldest"){
+            sortedNotes =sortedNotes.sort((a,b)=>
+                b.Sort-a.Sort
+                
+            )
         }
         return sortedNotes
+    }
+
+    const [editTitle,setEditTitle]=useState("")
+    const [editCont,setEditCont]=useState("")
+    const [editLabel,setEditLabel]=useState("")
+
+    ////Before Edit
+
+    let [BeforeTitle,setBeforeTitle]=useState("")
+    let [BeforeCont,setBeforeCont]=useState("")
+    let [BeforeLabel,setBeforeLabel]=useState("")
+
+    ///Id Checker for conformation
+    const [checkId,setCheckId]=useState("")
+
+    function editNote(item){
+        console.log(item.Title)
+        setCheckId(item.id)
+        setBeforeTitle(item.Title)
+        setBeforeCont(item.Content)
+        setBeforeLabel(item.Label)
+        setToggle(true)
+    }
+
+    function finalEdit(){
+        let m=savedNotes.find((a)=>a.id===checkId)
+        console.log(m)
+        var newArray= savedNotes.map((obj)=>{
+            if(obj.id===m.id){
+                return {...obj,Title:editTitle,Content:editCont,Label:editLabel,}
+            }else{
+                return obj
+            }
+        })
+        dispatchNote({
+            type:"Filtered",
+            payload:newArray
+        })
+        setBeforeTitle("")
+        setBeforeCont("")
+        setBeforeLabel("")
+        setToggle(false)
     }
 
     return (
@@ -35,81 +124,96 @@ function Home() {
                 <div className="home">
 
                     <div className="main-structure" >
-                    <div className="searchBar2" >
-                    <input className="search" type="text" placeholder="Search..........."
-                    onChange={(e)=>{
-                        dispatchStyles({
-                            type:"Search",
-                            payload:e.target.value
-                        })
-                    }}
-                    />
-                </div>
-                        
-                        <div className="imgFlex" >
-                            <div >
-                                <input style={{}} className="Add" placeholder="Add Title" onChange={(e) => setTitle(e.target.value)} />
-                            </div>
-                            <div className="buttons">
-                                <div className="footbtn">
-                                    <button className="btn3" style={{ backgroundColor: byBold ? "skyblue" : "inherit" }} onClick={() => {
-                                        dispatchStyles({
-                                            type: "Bold",
-                                            payload: !byBold
-                                        })
-                                    }}>𝑩</button>
-                                    <button className="btn3" style={{ backgroundColor: byItalic ? "skyblue" : "inherit" }} onClick={() => {
-                                        dispatchStyles({
-                                            type: "Italic",
-                                            payload: !byItalic
-                                        })
-                                    }}>𝙄</button>
-                                    <button className="btn3" style={{ backgroundColor: byUnderLine ? "skyblue" : "inherit" }} onClick={() => {
-                                        dispatchStyles({
-                                            type: "UnderLine",
-                                            payload: !byUnderLine
-                                        })
-                                    }}>U̲</button>
-                                    <button className="btn3" style={{ backgroundColor: byStrike ? "skyblue" : "inherit" }} onClick={() => {
-                                        dispatchStyles({
-                                            type: "Strike",
-                                            payload: !byStrike
-                                        })
-                                    }}>s̶</button>
-                                </div>
-                                <div>
-                                    <button className="btn"><img className="style1" src="https://cdn-icons-png.flaticon.com/128/235/235476.png" /></button>
-                                    <button className="btn"><img className="style1" src="https://cdn-icons-png.flaticon.com/128/235/235478.png" /></button>
-                                </div>
-                                <div className="imgbtn">
-                                    <button className="btn"><img className="style1" src="https://cdn-icons-png.flaticon.com/128/834/834147.png" /></button>
-                                    <button className="btn"><img className="style1" src="https://cdn-icons-png.flaticon.com/128/92/92353.png" /></button>
+                        <div className="searchBar2" >
+                            <input className="search" type="text" placeholder="Search..........."
+                                onChange={(e) => {
+                                    dispatchStyles({
+                                        type: "Search",
+                                        payload: e.target.value
+                                    })
+                                }}
+                            />
+                        </div>
 
-                                </div>
+                        <div className="imgFlex" style={{backgroundColor:color}}>
+                            <div >
+                                <input style={{}} className="Add" placeholder="Add Title" value={title} onChange={(e) => setTitle(e.target.value)} />
                             </div>
                             <div>
-                                <textarea style={{
-                                    fontWeight: byBold ? "bold" : "inherit", fontStyle: byItalic ? "italic" : "inherit",
-                                    textDecoration: byUnderLine ? "underLine" : "inherit", textDecorationLine: byStrike ? "line-through" : "inherit"
-                                }} className="AddText" placeholder="Describe Your Note"
-                                    onChange={(e) => setContent(e.target.value)}
-                                ></textarea>
+                                <ReactQuill
+                                    modules={modules}
+                                    formats={formats}
+                                    value={content}
+                                    placeholder="Take a note..."
+                                    onChange={(e)=>setContent(e)}
+
+                                // onChange={setValue}
+                                />
                             </div>
+                            <div>
+                                <input className="Add" placeholder="Add Label" value={label}
+                                onChange={(e)=>setLabel(e.target.value)}
+                                />
+                            </div>
+
                             <div className="foot">
                                 <div className="footbtn">
-                                    <button className="btn2"><img className="style" src="https://cdn-icons-png.flaticon.com/128/565/565789.png" /></button>
-                                    <button className="btn2"><img className="style" src="https://cdn-icons.flaticon.com/png/128/3936/premium/3936619.png?token=exp=1649530959~hmac=73550cc91d4ba00f4ba1045d56004b5d" /></button>
-                                    <button className="btn2"><img className="style" src="https://cdn-icons.flaticon.com/png/128/2926/premium/2926309.png?token=exp=1649531136~hmac=dd06ab11c6aba2726fea994d9e979805" /></button>
+                                    {/* <div ><i class="material-icons" onClick={()=>{
+                                        dispatchStyles({
+                                            type:"Pallete",
+                                            payload:!pallete
+                                        })
+                                    }}>palette</i></div>
+                                    <div><i class='material-icons' onClick={()=>{
+                                        dispatchStyles({
+                                            type:"Priority",
+                                            payload:!priority
+                                        })
+                                    }}>bar_chart</i></div> */}
+                                    <div 
+                                    // style={{display:priority?"none":"inherit"}}
+                                    >
+                
+                                        <button className="priority" onClick={()=>{setPriority("Low")}}>L</button>
+                                        <button className="priority" onClick={()=>{setPriority("Medium")}}>M</button>
+                                        <button className="priority" onClick={()=>{setPriority("High")}}>H</button>
+                                    </div>
+
                                 </div>
-                                <div></div>
+                                <div className="color" 
+                                // style={{display:pallete?"none":"inherit"}}
+                                >
+                                    <div className="red" onClick={()=>setColor("lightSalmon")}></div>
+                                    <div className="blue" onClick={()=>setColor("azure")}></div>
+                                    <div className="pink" onClick={()=>setColor("pink")}></div>
+                                    <div className="yellow" onClick={()=>setColor("yellow")}></div>
+                                </div>
                                 <div>
                                     <button className="Addbtn" onClick={() => {
                                         dispatchNote({
                                             type: "Add",
                                             payload: obj
                                         })
+                                        dispatchStyles({
+                                            type:"Pallete",
+                                            payload:!pallete
+                                        })
+                                        dispatchStyles({
+                                            type:"Priority",
+                                            payload:!priority
+                                        })
+                                        const check=labelArray.some(a=>a===label)
+                                        if(!check){
+                                            dispatchNote({
+                                                type:"Label",
+                                                payload:label
+                                            })
+                                        }
+                                        setCount((count)=>count+1)
                                         setContent("")
                                         setTitle("")
+                                        setColor("")
+                                        setLabel("")
                                     }} >Add Note</button>
                                 </div>
                             </div>
@@ -126,30 +230,72 @@ function Home() {
                     displayNotes().map((item, index) => {
                         return (
                             <>
-                                <div className="mapNotes" key={index}>
+                                <div className="mapNotes" key={item.id} style={{backgroundColor:item.Color}}>
                                     <div className="title">
                                         <div>Title:{item.Title}</div>
-                                        <i class="material-icons">push_pin</i>
+                                        <div>{item.Prioity}</div>
                                     </div>
-                                    <div>Content:{item.Content}</div>
+                                    <hr/>
+                                    <div dangerouslySetInnerHTML={{ __html: item.Content }}
+                                    ></div>
+                                    {
+                                        item.Label===""?<div></div>:<div className="lName">{item.Label}</div>
+                                    }
+                                    {/* <div className="lName">{item.Label}</div> */}
+                                    {/* <div className="buttons">
+                                        <span><input type="checkbox" onClick={() => { }} /><label onClick={() => { }}>HW</label></span>
+                                        <span><input type="checkbox" onClick={() => { }} /><label >Project</label></span>
+                                        <span><input type="checkbox" onClick={() => { }} /><label >Show</label></span>
+                                        <span><input type="checkbox" onClick={() => { }} /><label>Meeting</label></span>
+                                    </div> */}
                                     <div className="buttons">
-                                        <span><input type="checkbox" onClick={()=>{item.hw=true}}/><label onClick={()=>{item.hw=true}}>HW</label></span>
-                                        <span><input type="checkbox" onClick={()=>{item.project=true}}/><label >Project</label></span>
-                                        <span><input type="checkbox" onClick={()=>{item.show=true}}/><label >Show</label></span>
-                                        <span><input type="checkbox" onClick={()=>{item.meeting=true}}/><label>Meeting</label></span>
+                                        
+                                        <div><i class="material-icons" onClick={() => {
+                                            dispatchNote({
+                                                type: "Add_To_Archive",
+                                                payload: item
+                                            })
+                                            dispatchNote({
+                                                type: "Remove_Note",
+                                                payload: item
+                                            })
+                                        }}>archive</i></div>
+                                        <div><i class="material-icons" onClick={()=>{editNote(item)}}>edit</i></div>
+                                        <div><i class="material-icons" onClick={() => {
+                                            dispatchNote({
+                                                type: "Add_To_Trash",
+                                                payload: item
+                                            })
+                                            dispatchNote({
+                                                type: "Remove_Note",
+                                                payload: item
+                                            })
+                                        }}>delete</i></div>
                                     </div>
-                                    <div className="buttons">
-                                        <div><i class="material-icons">palette</i></div>
-                                        <div><i class="material-icons">label</i></div>
-                                        <div><i class="material-icons" onClick={()=>{item.archive=true}}>archive</i></div>
-                                        <div><i class="material-icons" onClick={()=>{item.trash=true}}>delete</i></div>
-                                    </div>
+                                    <div>{(item.Date).slice(0,25)}</div>
                                 </div>
                             </>
                         )
 
                     })
                 }
+            </div>
+            <div style={{display:toggle?"inherit":"none"}} className="edit">
+                <div className="editItem">
+                    <label >Title</label>
+                    <input className="editItems" placeholder="change Title" type="text"  defaultValue={BeforeTitle}  onChange={(e)=>setEditTitle(e.target.value)}/>
+                </div>
+                <div className="editItem">
+                    <label >Cont</label>
+                    <textarea className="editItems" placeholder="change Content"  type="text"  defaultValue={BeforeCont} onChange={(e)=>setEditCont(e.target.value)} />
+                </div>
+                <div className="editItem">
+                    <label >Label</label>
+                    <input className="editItems" placeholder="change Lable"  type="text"  defaultValue={BeforeLabel} onChange={(e)=>setEditLabel(e.target.value)}/>
+                </div>
+                <div>
+                    <button onClick={()=>finalEdit()}>Edit</button>
+                </div>
             </div>
         </>
     )
