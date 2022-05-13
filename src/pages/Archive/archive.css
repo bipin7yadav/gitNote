@@ -5,7 +5,11 @@
     flex-direction: row;
 }
 
+/* .sideBarArchive{
 
+    width: 14;
+} */
+                                                                                                                                                                                                                                                                                                                                                                    
 .mappingAreaArchive{
     display: flex;
     flex-wrap: wrap;

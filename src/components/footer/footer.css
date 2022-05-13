@@ -9,6 +9,8 @@
 }
 .footer-container {
     background-color: var(--white);
+    /* border: 1px solid black ; */
+    /* color: var(--white); */
     display: flex;
     gap: 1rem;
     flex-direction: row;
@@ -18,11 +20,10 @@
     margin-bottom: 0;
     padding: .3rem .3rem;
     bottom: 0;
-    position: fixed;
-    width: 100vw;
 }
 
 .icon{
     width: 30%;
     border-radius: 45%;
+    font-size: 3rem;
 }

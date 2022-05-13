@@ -7,6 +7,7 @@
 }
 .flexMe{
     display: flex;
+    position: relative;
 }
 .main-structure{
     display: flex;
@@ -23,7 +24,7 @@
     /* height: max-content; */
     padding: .4rem;
     margin-bottom: 12rem;
-    background-color: aqua;
+    /* background-color: aqua; */
 
 }
 
@@ -82,7 +83,7 @@
     padding: .7rem;
 }
 .Addbtn{
-    padding: .7rem;
+    padding: .4rem;
     outline: none;
     border-color: white;
 }
@@ -113,6 +114,7 @@
     width: 25vw;
     height: max-content;
     border: 2px solid black;
+    border-radius: 4px;
     margin: .5rem;
     text-align: start;
 }
@@ -120,6 +122,13 @@
 .title{
     display: flex;
     justify-content: space-between;
+}
+.lName{
+    background-color: cornflowerblue;
+    width: max-content;
+    margin: 3px;
+    padding: 3px;
+    border-radius: 4px;
 }
 
 .material-icons{
@@ -130,6 +139,79 @@
     background-color: aqua;
     width: 7.4rem;
     margin: .3rem;
+    border-radius: 4px;
+}
+
+.color{
+    display: flex;
+    flex-direction: row;
+    gap: 3px;
+    justify-content: space-between;
+}
+
+.red{
+    background-color: red;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+
+}
+
+.blue{
+    background-color: skyblue;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.pink{
+    background-color: pink;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.yellow{
+    background-color: yellow;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.priority{
+    border-radius: 50%;
+    margin: 3px;
+    height: max-content;
+    width: max-content;
+}
+
+.edit{
+    background-color: bisque;
+    box-sizing: border-box;
+    border: 1px solid black;
+    width: 25.2rem;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 17.3rem;
+    position: absolute;
+    top: 6.8rem;
+    left: 25.8rem;
+}
+
+.editItem{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.editItems{
+    height: 2rem;
     border-radius: 4px;
 }
 

@@ -1,7 +1,15 @@
 import "./login.css"
-import { Link } from "react-router-dom"
+import { Link,useLocation,useNavigate } from "react-router-dom"
+import {useAuth} from "../../Authentication/authContext"
+import { useState } from "react";
 
 function Login() {
+
+    const [ hidden, setHidden ] = useState(false);
+    const {login,setLogin}=useAuth();
+    const location =useLocation();
+    const navigate =useNavigate();
+
     return (
         <>
             <div className="signup">
@@ -13,12 +21,12 @@ function Login() {
 
                     <div className="textbox">
                         <label for="name">Email Address*</label><br />
-                        <input type="text" className="login-input" placeholder="bipinyadav9769@gmail.com" /><br />
+                        <input type="text" className="login-input" placeholder="bipinyadav9769@gmail.com" defaultValue={ hidden ? "adarshbalika@gmail.com" : ""} /><br />
                     </div>
 
                     <div className="textbox">
                         <label for="name">Password*</label><br />
-                        <input type="password" className="login-input" placeholder="*************" /><br />
+                        <input type="password" className="login-input" placeholder="*************" defaultValue={ hidden ? "12345" : ""} /><br />
                         
                     </div>
 
@@ -29,7 +37,16 @@ function Login() {
                     </div>
 
                     
-                    <Link to="/" ><button className="btn-login">Login</button></Link>
+                    
+                    <Link to="/home">
+                        <button className="btn-login"
+                        onClick={()=>{
+                            setLogin(hidden ? !login : "")
+                            navigate(location.state.from.pathname)
+                        }}>Login</button></Link>
+                    <div>
+                        <button onClick={()=>{setHidden(true)}}>Login as a Guest</button>
+                    </div>
                     <Link to=""><div>Forgot Password ?</div></Link>
 
                     <Link to="/signUp" ><button className="btn-login">Sign Up</button></Link>
